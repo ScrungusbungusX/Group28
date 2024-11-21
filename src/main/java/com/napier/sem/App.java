@@ -1,6 +1,11 @@
 package com.napier.sem;
 
 import java.sql.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class App
 {
@@ -26,9 +31,9 @@ public class App
             try
             {
                 // Wait a bit for db to start
-                Thread.sleep(30000);
+                Thread.sleep(3000);
                 // Connect to database
-                con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?useSSL=false", "root", "example");
+                con = DriverManager.getConnection("jdbc:mysql://localhost:33060/world?useSSL=false", "root", "example");
                 System.out.println("Successfully connected");
                 // Wait a bit
                 Thread.sleep(10000);
@@ -58,16 +63,6 @@ public class App
                 System.out.println("Error closing connection to database");
             }
         }
-
-            // Create new Application
-        App a = new App();
-
-            // Connect to database
-        a.connect();
-
-            // Disconnect from database
-        a.disconnect();
-
     }
 
         /*
@@ -97,7 +92,7 @@ public class App
                     // Wait a bit for db to start
                     Thread.sleep(30000);
                     // Connect to database
-                    con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?useSSL=false", "root", "example");
+                    con = DriverManager.getConnection("jdbc:mysql://db:3306/world?useSSL=false", "root", "example");
                     System.out.println("Successfully connected");
                     break;
                 }
@@ -149,12 +144,12 @@ public class App
             // Check one is returned
             if (rset.next())
             {
-                City cit = new City();
-                cit.name = rset.getString("Name");
-                cit.countryCode = rset.getString("Country Code");
-                cit.district = rset.getString("District");
-                cit.population = rset.getInt("Population");
-                return cit;
+                City city = new City();
+                city.name = rset.getString("Name");
+                city.countryCode = rset.getString("Country Code");
+                city.district = rset.getString("District");
+                city.population = rset.getInt("Population");
+                return city;
             }
             else
                 return null;
@@ -167,16 +162,25 @@ public class App
         }
     }
 
-    public void displayCityByPopulation(City cit)
+    public void displayCityByPopulation(City city)
     {
-        if (cit != null)
+        if (city != null)
         {
             System.out.println(
-                    cit.id + " "
-                            + cit.name + " "
-                            + cit.countryCode + "\n"
-                            + cit.district + "\n"
-                            + "Population: " + cit.population + "\n");
+                    city.id + " "
+                            + city.name + " "
+                            + city.countryCode + "\n"
+                            + city.district + "\n"
+                            + "Population: " + city.population + "\n");
         }
     }
 }
+
+// Create new Application
+//App a = new App();
+
+// Connect to database
+//        a.connect();
+
+// Disconnect from database
+//        a.disconnect();
