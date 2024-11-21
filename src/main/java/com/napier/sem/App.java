@@ -1,6 +1,8 @@
 package com.napier.sem;
 
 import java.sql.*;
+
+import lombok.Getter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -9,105 +11,48 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class App
 {
-    public static void main(String[] args)
-    {
-        try
-        {
+        /*
+         * Connect to the MySQL database.
+         */
+    @Getter
+    private Connection con = null;
+
+    public void connect() {
+        try {
             // Load Database driver
             Class.forName("com.mysql.cj.jdbc.Driver");
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             System.out.println("Could not load SQL driver");
             System.exit(-1);
         }
 
-        // Connection to the database
-        Connection con = null;
-        int retries = 100;
-        for (int i = 0; i < retries; ++i)
-        {
+        int retries = 10;
+        for (int i = 0; i < retries; ++i) {
             System.out.println("Connecting to database...");
-            try
-            {
+            try {
                 // Wait a bit for db to start
-                Thread.sleep(3000);
+                Thread.sleep(30000);
                 // Connect to database
-                con = DriverManager.getConnection("jdbc:mysql://localhost:33060/world?useSSL=false", "root", "example");
+                con = DriverManager.getConnection("jdbc:mysql://db:3306/world?useSSL=false", "root", "example");
                 System.out.println("Successfully connected");
-                // Wait a bit
-                Thread.sleep(10000);
-                // Exit for loop
                 break;
-            }
-            catch (SQLException sqle)
-            {
+            } catch (SQLException sqle) {
                 System.out.println("Failed to connect to database attempt " + Integer.toString(i));
                 System.out.println(sqle.getMessage());
-            }
-            catch (InterruptedException ie)
-            {
+            } catch (InterruptedException ie) {
                 System.out.println("Thread interrupted? Should not happen.");
             }
-        }
 
-        if (con != null)
-        {
-            try
-            {
-                // Close connection
-                con.close();
-            }
-            catch (Exception e)
-            {
-                System.out.println("Error closing connection to database");
+            if (con != null) {
+                try {
+                    // Close connection
+                    con.close();
+                } catch (Exception e) {
+                    System.out.println("Error closing connection to database");
+                }
             }
         }
     }
-
-        /*
-         * Connect to the MySQL database.
-         */
-    private Connection con = null;
-
-    public void connect()
-        {
-            try
-            {
-                // Load Database driver
-                Class.forName("com.mysql.cj.jdbc.Driver");
-            }
-            catch (ClassNotFoundException e)
-            {
-                System.out.println("Could not load SQL driver");
-                System.exit(-1);
-            }
-
-            int retries = 10;
-            for (int i = 0; i < retries; ++i)
-            {
-                System.out.println("Connecting to database...");
-                try
-                {
-                    // Wait a bit for db to start
-                    Thread.sleep(30000);
-                    // Connect to database
-                    con = DriverManager.getConnection("jdbc:mysql://db:3306/world?useSSL=false", "root", "example");
-                    System.out.println("Successfully connected");
-                    break;
-                }
-                catch (SQLException sqle)
-                {
-                    System.out.println("Failed to connect to database attempt " + Integer.toString(i));
-                    System.out.println(sqle.getMessage());
-                }
-                catch (InterruptedException ie)
-                {
-                    System.out.println("Thread interrupted? Should not happen.");
-                }
-            }
-        }
-
         /*
          * Disconnect from the MySQL database.
          */
@@ -127,10 +72,11 @@ public class App
             }
         }
 
-    public City cityByPopulation(Connection con)
+    public ArrayList<City> cityByPopulation(Connection con)
     {
         try
         {
+            ArrayList<City> cities = new ArrayList<>();
             // Create an SQL statement
             Statement stmt = con.createStatement();
             // Create string for SQL statement
@@ -142,17 +88,16 @@ public class App
             ResultSet rset = stmt.executeQuery(strSelect);
             // Return new employee if valid.
             // Check one is returned
-            if (rset.next())
+            while (rset.next())
             {
                 City city = new City();
                 city.name = rset.getString("Name");
                 city.countryCode = rset.getString("Country Code");
                 city.district = rset.getString("District");
                 city.population = rset.getInt("Population");
-                return city;
+                cities.add(city);
             }
-            else
-                return null;
+            return cities;
         }
         catch (Exception e)
         {
@@ -162,7 +107,7 @@ public class App
         }
     }
 
-    public void displayCityByPopulation(City city)
+    public void displayCityByPopulation(ArrayList<City> city)
     {
         if (city != null)
         {
@@ -176,11 +121,19 @@ public class App
     }
 }
 
-// Create new Application
-//App a = new App();
+class Run
+{
+    public static void main(String[] args){
+    App coursework = new App();
+    // Connect from database
+    coursework.connect();
 
-// Connect to database
-//        a.connect();
+    ArrayList<City> city = coursework.cityByPopulation(coursework.getCon());
+    coursework.displayCityByPopulation(city);
 
-// Disconnect from database
-//        a.disconnect();
+    // Disconnect from database
+    coursework.disconnect();
+    }
+}
+
+
