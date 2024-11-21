@@ -33,12 +33,13 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Integration Tests
+      - name: Integration Test1
         run: |
           docker build -t database ./db 
           docker run --name employees -dp 33060:3306 database
           mvn -Dtest=com.napier.sem.BasicIntegrationTest test
-          docker stop employees
-          docker rm employees
-          docker image rm database   
+      - name: Integration Test2
+        run: |
+          mvn -Dtest=com.napier.sem.testThatMightWork test
+
 
