@@ -14,6 +14,22 @@ public class App
         /*
          * Connect to the MySQL database.
          */
+
+    public static void main(String[] args) {
+        App coursework = new App();
+
+        City d = new City();
+
+        // Connect from database
+        coursework.connect();
+
+        ResultSet city = coursework.cityByPopulation(coursework.getCon());
+        d.displayCities(city);
+
+        // Disconnect from database
+        coursework.disconnect();
+    }
+
     @Getter
     private Connection con = null;
 
@@ -72,7 +88,7 @@ public class App
             }
         }
 
-    public ArrayList<City> cityByPopulation(Connection con)
+    public ResultSet cityByPopulation(Connection con)
     {
         try
         {
@@ -88,16 +104,8 @@ public class App
             ResultSet rset = stmt.executeQuery(strSelect);
             // Return new employee if valid.
             // Check one is returned
-            while (rset.next())
-            {
-                City city = new City();
-                city.name = rset.getString("Name");
-                city.countryCode = rset.getString("Country Code");
-                city.district = rset.getString("District");
-                city.population = rset.getInt("Population");
-                cities.add(city);
-            }
-            return cities;
+
+            return rset;
         }
         catch (Exception e)
         {
@@ -106,34 +114,7 @@ public class App
             return null;
         }
     }
-
-    public void displayCityByPopulation(ArrayList<City> city)
-    {
-        if (city != null)
-        {
-            System.out.println(
-                    city.id + " "
-                            + city.name + " "
-                            + city.countryCode + "\n"
-                            + city.district + "\n"
-                            + "Population: " + city.population + "\n");
-        }
-    }
 }
 
-class Run
-{
-    public static void main(String[] args){
-    App coursework = new App();
-    // Connect from database
-    coursework.connect();
-
-    ArrayList<City> city = coursework.cityByPopulation(coursework.getCon());
-    coursework.displayCityByPopulation(city);
-
-    // Disconnect from database
-    coursework.disconnect();
-    }
-}
 
 
