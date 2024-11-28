@@ -91,15 +91,15 @@ public class Country {
                                 String continent = resultSet.getString("continent");
                                 String region = resultSet.getString("region");
                                 Double surfaceArea = resultSet.getDouble("surfaceArea");
-                                Integer indepYear = resultSet.getInt("indepYear");
-                                Integer population = resultSet.getInt("population");
+                                int indepYear = resultSet.getInt("indepYear");
+                                int population = resultSet.getInt("population");
                                 Float lifeExpectancy = resultSet.getFloat("lifeExpectancy");
                                 Double gnp = resultSet.getDouble("gnp");
                                 Double gnpOld = resultSet.getDouble("gnpOld");
                                 String localName = resultSet.getString("localName");
                                 String governmentForm = resultSet.getString("governmentForm");
                                 String headOfState = resultSet.getString("headOfState");
-                                Integer capital = resultSet.getInt("capital");
+                                int capital = resultSet.getInt("capital");
                                 String code2 = resultSet.getString("code2");
 
                                 System.out.println("Code: " + code + " Name: " + name + " Continent: " + continent +

@@ -19,6 +19,7 @@ public class App
         App coursework = new App();
 
         City d = new City();
+        Country b = new Country();
 
         if (args.length < 1) {
             coursework.connect("localhost:33060", 10000);
@@ -28,6 +29,9 @@ public class App
 
         ResultSet city = coursework.cityByPopulation(coursework.getCon());
         d.displayCities(city);
+
+        ResultSet country = coursework.cityByContinent(coursework.getCon());
+        b.displayCountries(country);
 
         // Disconnect from database
         coursework.disconnect();
@@ -91,7 +95,7 @@ public class App
             }
         }
 
-    public ResultSet cityByPopulation(Connection con)
+    public ResultSet cityByContinent(Connection con)
     {
         try
         {
@@ -100,9 +104,13 @@ public class App
             Statement stmt = con.createStatement();
             // Create string for SQL statement
             String strSelect =
-                    "SELECT * "
-                            + "FROM country "
-                            + "ORDER BY Population DESC ";
+                    "SELECT city.* "
+                            + "FROM city, "
+                            + "    (SELECT * "
+                            + "     FROM country "
+                            + "     WHERE Continent = 'Asia') as q1 "
+                            + "WHERE city.CountryCode = q1.code "
+                            + "ORDER BY city.Population DESC";
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(strSelect);
             // Return new employee if valid.
