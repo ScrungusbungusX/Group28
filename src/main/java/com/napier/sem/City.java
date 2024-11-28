@@ -47,8 +47,8 @@ public class City
                 String district = resultSet.getString("district");
                 int population = resultSet.getInt("population");
 
-                System.out.println("Name: " + name + " Country Code: " + countryCode + " district: " + district +
-                        " population: " + population + "\n");
+                System.out.println("Name: " + name + " Country Code: " + countryCode + " District: " + district +
+                        " Population: " + population + "\n");
             }
         } catch (Exception e) {
             System.out.println("Failed to display city details");

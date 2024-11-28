@@ -95,6 +95,33 @@ public class App
     {
         try
         {
+            ArrayList<Country> countries = new ArrayList<>();
+            // Create an SQL statement
+            Statement stmt = con.createStatement();
+            // Create string for SQL statement
+            String strSelect =
+                    "SELECT * "
+                            + "FROM country "
+                            + "ORDER BY Population DESC ";
+            // Execute SQL statement
+            ResultSet rset = stmt.executeQuery(strSelect);
+            // Return new employee if valid.
+            // Check one is returned
+
+            return rset;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get City details");
+            return null;
+        }
+    }
+
+    public ResultSet cityByPopulation(Connection con)
+    {
+        try
+        {
             ArrayList<City> cities = new ArrayList<>();
             // Create an SQL statement
             Statement stmt = con.createStatement();
@@ -118,6 +145,3 @@ public class App
         }
     }
 }
-
-
-
