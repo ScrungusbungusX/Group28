@@ -1,6 +1,7 @@
 package com.napier.sem;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Represents an employee
@@ -10,29 +11,27 @@ public class City
     /**
      * City ID
      */
-    public Integer id;
+    public static Integer id;
 
     /**
      * City name
      */
-    public String name;
+    public static String name;
 
     /**
      * Country code belonging to city
      */
-    public String countryCode;
+    public static String countryCode;
 
     /**
      * District city is located in
      */
-    public String district;
+    public static String district;
 
     /**
      * City population
      */
-    public Integer population;
-
-
+    public static Integer population;
 
     public void displayCities(ResultSet resultSet) {
         try {
@@ -42,19 +41,25 @@ public class City
             }
             // Iterate through the ResultSet and print country details
             while (resultSet.next()) {
+                int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String countryCode = resultSet.getString("countryCode");
                 String district = resultSet.getString("district");
                 int population = resultSet.getInt("population");
+                // there must be a population, getObject not required
 
-                System.out.println("Name: " + name + " Country Code: " + countryCode + " District: " + district +
+                System.out.println("ID: " + id + " Name: " + name + " Country Code: " + countryCode + " District: " + district +
                         " Population: " + population + "\n");
             }
         } catch (Exception e) {
             System.out.println("Failed to display city details");
         } finally {
-            if (resultSet != null) {
-
+            try{
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }

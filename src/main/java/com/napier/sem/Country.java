@@ -1,6 +1,7 @@
 package com.napier.sem;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Country {
         /**
@@ -11,72 +12,72 @@ public class Country {
         /**
          * Country name
          */
-        public String name;
+        public static String name;
 
         /**
          * Continent country is located in
          */
-        public String continent;
+        public static String continent;
 
         /**
          * Region within continent
          */
-        public String region;
+        public static String region;
 
         /**
          * Surface area of country (square kilometers)
          */
-        public Double surfaceArea;
+        public static Double surfaceArea;
 
         /**
          * Year of independence (if applicable)
          */
-        public Integer indepYear;
+        public static Integer indepYear;
 
         /**
          * Country population
          */
-        public Integer population;
+        public static Integer population;
 
         /**
         * Life expectancy
         */
-        public Float lifeExpectancy;
+        public static Double lifeExpectancy;
 
         /**
         * Gross National Product (GNP) of country
         */
-        public Double gnp;
+        public static Double gnp;
 
         /**
         * Old variant ^
         */
-        public Double gnpOld;
+        public static Double gnpOld;
 
         /**
         * Local name of country
         */
-        public String localName;
+        public static String localName;
 
         /**
         * Form of government
         */
-        public String governmentForm;
+        public static String governmentForm;
 
         /**
         * Head of state
         */
-        public String headOfState;
+        public static String headOfState;
 
         /**
         * Capital city ID (foreign key links city table)
         */
-        public Integer capital;
+        public static Integer capital;
 
         /**
         * Country 2 letter code
         */
-        public String code2;
+        public static String code2;
 
         public void displayCountries(ResultSet resultSet) {
                 try {
@@ -90,16 +91,17 @@ public class Country {
                                 String name = resultSet.getString("name");
                                 String continent = resultSet.getString("continent");
                                 String region = resultSet.getString("region");
-                                Double surfaceArea = resultSet.getDouble("surfaceArea");
-                                int indepYear = resultSet.getInt("indepYear");
+                                Double surfaceArea = (Double) resultSet.getObject("surfaceArea");
+                                Integer indepYear = (Integer) resultSet.getObject("indepYear");
                                 int population = resultSet.getInt("population");
-                                Float lifeExpectancy = resultSet.getFloat("lifeExpectancy");
-                                Double gnp = resultSet.getDouble("gnp");
-                                Double gnpOld = resultSet.getDouble("gnpOld");
+                                Double lifeExpectancy = (Double) resultSet.getObject("lifeExpectancy");
+                                Double gnp = (Double) resultSet.getObject("gnp");
+                                Double gnpOld = (Double) resultSet.getObject("gnpOld");
+                                // getObject is required for fields that could return null
                                 String localName = resultSet.getString("localName");
                                 String governmentForm = resultSet.getString("governmentForm");
                                 String headOfState = resultSet.getString("headOfState");
-                                int capital = resultSet.getInt("capital");
+                                Integer capital = (Integer) resultSet.getObject("capital");
                                 String code2 = resultSet.getString("code2");
 
                                 System.out.println("Code: " + code + " Name: " + name + " Continent: " + continent +
@@ -110,11 +112,17 @@ public class Country {
                                         " Head of State: " + headOfState + " Capital: " + capital + " Two Letter Code: " + code2 +"\n");
                         }
                 } catch (Exception e) {
-                        System.out.println("Failed to display city details");
-                } finally {
-                        if (resultSet != null) {
-
+                        System.out.println("Failed to display cities in countries details");
+                }
+                finally {
+                        try{
+                                if (resultSet != null) {
+                                resultSet.close();
+                                }
+                        } catch (SQLException e) {
+                                e.printStackTrace();
                         }
                 }
+
         }
 }

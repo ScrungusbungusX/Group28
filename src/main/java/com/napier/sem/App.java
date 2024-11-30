@@ -3,9 +3,6 @@ package com.napier.sem;
 import java.sql.*;
 
 import lombok.Getter;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,8 +27,10 @@ public class App
         ResultSet city = coursework.cityByPopulation(coursework.getCon());
         d.displayCities(city);
 
-        ResultSet country = coursework.cityByContinent(coursework.getCon());
+        ResultSet country = coursework.countryByPopulation(coursework.getCon());
         b.displayCountries(country);
+
+        ResultSet cityContinent = coursework.cityByContinent(coursework.getCon());
 
         // Disconnect from database
         coursework.disconnect();
@@ -95,6 +94,33 @@ public class App
             }
         }
 
+    public ResultSet countryByPopulation(Connection con)
+    {
+        try
+        {
+            ArrayList<Country> countries = new ArrayList<>();
+            // Create an SQL statement
+            Statement stmt = con.createStatement();
+            // Create string for SQL statement
+            String strSelect =
+                    "SELECT * "
+                            + "FROM country "
+                            + "ORDER BY Population DESC ";
+            // Execute SQL statement
+            ResultSet rset = stmt.executeQuery(strSelect);
+            // Return new employee if valid.
+            // Check one is returned
+
+            return rset;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get cities in countries details");
+            return null;
+        }
+    }
+
     public ResultSet cityByContinent(Connection con)
     {
         try
@@ -121,7 +147,7 @@ public class App
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            System.out.println("Failed to get City details");
+            System.out.println("Failed to get cities in countries details");
             return null;
         }
     }
