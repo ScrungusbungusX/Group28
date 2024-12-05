@@ -30,6 +30,7 @@ public class App
         b.displayCountries(country);
 
         ResultSet cityContinent = coursework.cityByContinent(coursework.getCon());
+        b.displayCountries(country);
 
         // Disconnect from database
         coursework.disconnect();
