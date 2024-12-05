@@ -39,7 +39,7 @@ public class City
                 System.out.println("ResultSet is null.");
                 return;
             }
-            // Iterate through the ResultSet and print country details
+            // Iterate through the ResultSet and print city details
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
