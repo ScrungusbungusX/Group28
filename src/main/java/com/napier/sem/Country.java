@@ -103,7 +103,6 @@ public class Country {
                                         " Capital: " + capital + " Two Letter Code: " + code2 +"\n");
                         }
                 } catch (Exception e) {
-                        System.out.println(e.getMessage());
                         System.out.println("Failed to display country details");
                 }
 
