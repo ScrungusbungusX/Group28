@@ -8,10 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class App
 {
-        /*
-         * Connect to the MySQL database.
-         */
-
     public static void main(String[] args) {
         App coursework = new App();
 
@@ -20,12 +16,15 @@ public class App
 
         if (args.length < 1) {
             coursework.connect("localhost:33060", 10000);
+            // tries to run on localhost, if that fails it attempts to login remotely
         } else {
             coursework.connect(args[0], Integer.parseInt(args[1]));
         }
 
         ResultSet city = coursework.cityByPopulation(coursework.getCon());
         d.displayCities(city);
+
+        // runs the sql query statement then the respective display class in country/city.java
 
         ResultSet country = coursework.countryByPopulation(coursework.getCon());
         b.displayCountries(country);
@@ -38,6 +37,10 @@ public class App
 
     @Getter
     private Connection con = null;
+
+    /*
+     * Connect to the MySQL database.
+     */
 
     public void connect(String location, int delay) {
         try {
@@ -59,6 +62,7 @@ public class App
                 }
 
                 // Connect to database
+                // storing the login in plain text rad
                 con = DriverManager.getConnection("jdbc:mysql://" + location
                                 + "/world?allowPublicKeyRetrieval=true&useSSL=false",
                         "root", "example");
@@ -67,6 +71,8 @@ public class App
             } catch (SQLException sqle) {
                 System.out.println("Failed to connect to database attempt " + i);
                 System.out.println(sqle.getMessage());
+
+                // loops for x number of retries
 
                 // Let's wait before attempting to reconnect
                 shouldWait = true;
@@ -108,7 +114,7 @@ public class App
                             + "ORDER BY Population DESC ";
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(strSelect);
-            // Return new employee if valid.
+            // Return if querying countries in the world is valid.
             // Check one is returned
 
             return rset;
@@ -137,9 +143,10 @@ public class App
                             + "     WHERE Continent = 'Asia') as q1 "
                             + "WHERE city.CountryCode = q1.code "
                             + "ORDER BY city.Population DESC";
+            // would probably take in continent as user input but this works too
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(strSelect);
-            // Return new employee if valid.
+            // Return if cities in continent is valid.
             // Check one is returned
 
             return rset;
@@ -147,7 +154,7 @@ public class App
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            System.out.println("Failed to get cities in countries details");
+            System.out.println("Failed to get cities in continents details");
             return null;
         }
     }
@@ -166,7 +173,7 @@ public class App
                             + "ORDER BY Population DESC ";
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(strSelect);
-            // Return new employee if valid.
+            // Return if query cities in the world is valid.
             // Check one is returned
 
             return rset;

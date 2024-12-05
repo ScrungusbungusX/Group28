@@ -7,7 +7,7 @@ public class Country {
         /**
          * Country code (primary key)
          */
-        public String code;
+        public static String code;
 
         /**
          * Country name
@@ -98,6 +98,7 @@ public class Country {
                                 Double gnp = (Double) resultSet.getObject("gnp");
                                 Double gnpOld = (Double) resultSet.getObject("gnpOld");
                                 // getObject is required for fields that could return null
+                                // signified by the capital letter variant
                                 String localName = resultSet.getString("localName");
                                 String governmentForm = resultSet.getString("governmentForm");
                                 String headOfState = resultSet.getString("headOfState");
@@ -112,7 +113,7 @@ public class Country {
                                         " Head of State: " + headOfState + " Capital: " + capital + " Two Letter Code: " + code2 +"\n");
                         }
                 } catch (Exception e) {
-                        System.out.println("Failed to display cities in countries details");
+                        System.out.println("Failed to display country details");
                 }
                 finally {
                         try{
