@@ -91,38 +91,20 @@ public class Country {
                                 String name = resultSet.getString("name");
                                 String continent = resultSet.getString("continent");
                                 String region = resultSet.getString("region");
-                                Double surfaceArea = (Double) resultSet.getObject("surfaceArea");
-                                Integer indepYear = (Integer) resultSet.getObject("indepYear");
                                 int population = resultSet.getInt("population");
-                                Double lifeExpectancy = (Double) resultSet.getObject("lifeExpectancy");
-                                Double gnp = (Double) resultSet.getObject("gnp");
-                                Double gnpOld = (Double) resultSet.getObject("gnpOld");
                                 // getObject is required for fields that could return null
                                 // signified by the capital letter variant
-                                String localName = resultSet.getString("localName");
-                                String governmentForm = resultSet.getString("governmentForm");
-                                String headOfState = resultSet.getString("headOfState");
                                 Integer capital = (Integer) resultSet.getObject("capital");
                                 String code2 = resultSet.getString("code2");
 
                                 System.out.println("Code: " + code + " Name: " + name + " Continent: " + continent +
-                                        " Region: " + region + " Surface Area: " + surfaceArea +
-                                        " Independence Year: " + indepYear + " Population: " + population +
-                                        " Life Expectancy: " + lifeExpectancy + " GNP: " + gnp + " Old GNP: " + gnpOld +
-                                        " Local Name: " + localName + " Government Form: " + governmentForm +
-                                        " Head of State: " + headOfState + " Capital: " + capital + " Two Letter Code: " + code2 +"\n");
+                                        " Region: " + region +
+                                        " Population: " + population +
+                                        " Capital: " + capital + " Two Letter Code: " + code2 +"\n");
                         }
                 } catch (Exception e) {
+                        System.out.println(e.getMessage());
                         System.out.println("Failed to display country details");
-                }
-                finally {
-                        try{
-                                if (resultSet != null) {
-                                resultSet.close();
-                                }
-                        } catch (SQLException e) {
-                                e.printStackTrace();
-                        }
                 }
 
         }
